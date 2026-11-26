@@ -1,0 +1,29 @@
+To achieve a modern, premium Single Page Application (SPA) experience inside WordPress, the plugin should register a single primary menu item in the WordPress sidebar. Clicking it initializes your React application, handling all submenus, tabs, and views dynamically without page reloads.This approach keeps the WordPress admin clean while delivering an application-like interface using standard React-Router or tab state architectures.1. WordPress Admin Sidebar FootprintTo comply with modern UI/UX trends and avoid cluttering the native WordPress dashboard, the plugin uses a minimal footprint in the side navigation:Plaintext 🧭 WordPress Sidebar
+  ┗ 🚀 Cloecloud CLI
+     ┣ 📋 Dashboard (Points to the SPA root)
+     ┗ 🔑 Upgrade to Pro (Hidden if Pro is activated)
+2. SPA Dashboard Architecture MapOnce inside the Cloecloud CLI page, the entire application is structured as a top-tier navigation bar with contextual nested tabs.Plaintext 💻 CLOECLOUD CLI SPA MAIN VIEW
+  ┃
+  ┣━━ 📊 [1.0] Overview & Analytics (Default View)
+  ┃    ┣━━ 📑 1.1 Live Feed / Activity Log
+  ┃    ┗━━ 📑 1.2 Performance Metrics
+  ┃
+  ┣━━ ⚙️ [2.0] Command Manager
+  ┃    ┣━━ 📑 2.1 Core Commands [FREE]
+  ┃    ┣━━ 📑 2.2 WooCommerce Macros [PRO]
+  ┃    ┗━━ 📑 2.3 Agency & Developer Ops [PRO]
+  ┃
+  ┣━━ 🛠️ [3.0] Custom Macro Builder [PRO]
+  ┃    ┣━━ 📑 3.1 Active Macros
+  ┃    ┣━━ 📑 3.2 Visual Builder Workspace
+  ┃    ┗━━ 📑 3.3 Webhooks & Aliases
+  ┃
+  ┣━━ 🛡️ [4.0] Access & Security
+  ┃    ┣━━ 📑 4.1 Role-Based Permissions
+  ┃    ┗━━ 📑 4.2 Context-Aware Settings
+  ┃
+  ┗━━ 🔧 [5.0] Global Settings
+       ┣━━ 📑 5.1 General & UI Configuration
+       ┣━━ 📑 5.2 White-Labeling [PRO]
+       ┗━━ 📑 5.3 Licensing [PRO]
+3. Detailed UI/UX Breakdown of Submenus & Tabs📊 1.0 Overview & Analytics (SPA View)The primary landing dashboard giving agency owners and store managers instant visual feedback on actions taken via the command palette.1.1 Live Feed / Activity Log: A running, real-time stream showing which user executed what command (e.g., Admin John executed 'Clear All Caches' 2 mins ago). Includes filter options by user role or command category.1.2 Performance Metrics: A clean data grid showcasing usage metrics: Total commands executed, estimated "seconds saved" per interaction, and a visual graph showing peak hours of command palette usage.⚙️ 2.0 Command Manager (SPA View)A centralized toggle matrix where admins can turn specific command groups on/off and configure basic parameters.2.1 Core Commands [FREE]: Global toggles for native WordPress commands. Toggle individual controls for flushing rewrite rules, changing maintenance mode, and general navigation options.2.2 WooCommerce Macros [PRO]: High-utility toggles for e-commerce workflows. Configure the default parameters for automated refunds, export template destinations, and quick stock adjustments.2.3 Agency & Developer Ops [PRO]: Integrations layout. Checkboxes to integrate the cache-clearing macro with external plugins like WP Rocket, LiteSpeed, or cloud networks like Cloudflare.🛠️ 3.0 Custom Macro Builder (SPA View) [PRO]The powerhouse configuration panel for creating unique text-to-action prompts without code.3.1 Active Macros: A clean data table displaying all custom user-defined commands, their shortcode aliases, and a toggle to quickly pause or resume them.3.2 Visual Builder Workspace: A modular, drag-and-drop workspace UI.Define the keyword prompt (Trigger text).Add input arguments (Variables).Chain execution steps sequentially (e.g., Step 1: Put site in maintenance mode $\rightarrow$ Step 2: Sync database $\rightarrow$ Step 3: Exit maintenance mode).3.3 Webhooks & Aliases: Configuration screen to bind external endpoints to command triggers (e.g., executing Deploy Production fires a JSON payload to a Vercel webhook webhook link).🛡️ 4.0 Access & Security (SPA View)Crucial configuration options for multi-user sites, security compliance, and client management.4.1 Role-Based Permissions: A dynamic permission grid mapping user roles (Administrator, Editor, Shop Manager) to allowed command sets. Admins can lock destructive commands (like Regenerate Database Logs) strictly to network-level users.4.2 Context-Aware Settings: Toggles determining where commands can appear. For instance, ensuring Refund Order autocomplete logic is only fetched and suggested when a user is actively interacting with the /wp-admin/edit.php?post_type=shop_order URI context.🔧 5.0 Global Settings (SPA View)System maintenance, licensing, and aesthetics adjustments.5.1 General & UI Configuration: Adjusting the universal palette keyboard shortcuts (e.g., default Cmd + K or custom overrides like Ctrl + Space), setting dark/light mode themes for the palette overlay, and handling debug log data retention limits.5.2 White-Labeling [PRO]: Input fields to alter the public-facing brand parameters. Swap the command palette modal logo, remove the "Cloecloud" footer text, and rename the plugin entirely within the menu for clients.5.3 Licensing [PRO]: Secure license verification field communicating directly with your licensing server endpoint to fetch system validation statuses, update loops, and support eligibility deadlines.4. SPA UI/UX Implementation StrategyState Management: When the plugin loads, a single REST API request (GET /wp-json/cloecloud/v1/settings) populates the React application state (Context or Zustand). Every tab switch is instantaneous because it simply updates local UI states, rather than requiring traditional page reloads.Upsell Mechanics (Freemium Gate): When the Pro add-on plugin is absent, the Pro sections (WooCommerce Macros, Custom Macro Builder) are still visible in the React app layout but feature an elegantly blurred view overlay complete with contextual upgrade callouts, directly driving revenue potential inside the app dashboard.
